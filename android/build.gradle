@@ -1,4 +1,4 @@
-group 'com.example.yuv_to_png'
+group 'com.khaled.yuv_to_png'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace 'com.example.yuv_to_png'
+        namespace 'com.khaled.yuv_to_png'
     }
 
     compileSdk 34
