@@ -29,6 +29,8 @@ The PNG data can then be used to display the image in Flutter using `Image.memor
 
 please note that lensDirection effect the image rotation correction which might effect the image orientation if neglected
 
+if you have further questions feel free to connect and ask me on [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white%29)](https://www.linkedin.com/in/khaled-saad-3b94b817b/) 
+
 ## Getting Started
 
 This project contains platform specific implementation for Android. To use this plugin:
