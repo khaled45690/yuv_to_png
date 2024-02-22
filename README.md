@@ -23,7 +23,7 @@ For example:
     lensDirection: lensDirection);
 ```
 
-The PNG data can then be used to display the image in Flutter using `Image.memory()` or as shown in the example .
+The PNG data can then be used to display the image in Flutter using `Image.memory()` or as shown in the example application.
 
 ## Note
 
