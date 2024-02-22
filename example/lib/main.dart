@@ -420,7 +420,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
       cameraController.startImageStream(
         (CameraImage cameraImage) async {
-          if (counter > 1 && controller != null) {
+          if (counter > 2 && controller != null) {
             counter = 0;
             Uint8List png = YuvToPng.yuvToPng(cameraImage,
                 lensDirection: cameraController.description.lensDirection);
