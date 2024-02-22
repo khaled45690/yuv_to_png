@@ -13,7 +13,7 @@ The plugin takes in CameraImage image data in both yuv240 and nv21 and returns a
 To use this plugin:
 
 1. install and import the plugin
-2. Call `YuvToPng.yuvToPng` method passing and parse the CameraImage variable
+2. Call `YuvToPng.yuvToPng` method passing the CameraImage variable
 3. it will handle the conversion and identification of the image formate and returns a `Uint8List` containing PNG image data
 
 For example:
