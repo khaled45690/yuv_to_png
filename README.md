@@ -31,15 +31,4 @@ please note that lensDirection effect the image rotation correction which might 
 
 if you have further questions feel free to connect and ask me on   <a href="https://www.linkedin.com/in/khaled-saad-3b94b817b/"><img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/linkedin.svg" width="20" height="20"></a>
 
-## Getting Started
-
-This project contains platform specific implementation for Android. To use this plugin:
-
-1. Add this package as a dependency in pubspec.yaml
-2. Import the package in Dart code
-3. Follow the usage instructions above
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 
