@@ -47,15 +47,6 @@ add_library(libopencv SHARED IMPORTED)
 add_library(libconversion SHARED IMPORTED)
 set_target_properties(libyuv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/Libyuv/${ANDROID_ABI}/libyuv.so)
 set_target_properties(libopencv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/OpenCV/${ANDROID_ABI}/libopencv_java4.so)
-# ExternalProject_Add(
-#     bunny
-#     PREFIX "demo"
-#     URL http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz
-#     URL_HASH SHA512=59e7b43db838dbe6f02fda5e844d18e190d32d2ca1a83dc9f6b1aaed43e0340fc1e8ecabed6fffdac9f85bd34e7e93b5d8a17283d59ea3c14977a0372785d2bd
-#     CONFIGURE_COMMAND ""
-#     BUILD_COMMAND ""
-#     INSTALL_COMMAND ""
-# )
 set_target_properties(libconversion PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/libconversion/${ANDROID_ABI}/libconversion.so)
 
 
