@@ -1,12 +1,12 @@
 # yuv_to_png
 
-A new Flutter plugin project that converts YUV image data to PNG image. 
+A Flutter plugin project that converts YUV image data to PNG image. 
 
 ## Overview
 
 This package provides a Flutter plugin to convert YUV image data into PNG image format. It includes platform-specific implementation code for Android only as this from my knowledge happens only in Android systems . 
 
-The plugin takes in CameraImage image data in both yuv240 and nv21 and returns a PNG image in uint8;ist . This allows you to process camera frames, video frames etc captured natively in YUV format and convert them to PNG that can be displayed in Flutter when needed.
+The plugin takes in CameraImage image data in both yuv240 and nv21 and returns a PNG image in uint8list . This allows you to process camera frames, video frames etc captured natively in YUV format and convert them to PNG that can be displayed in Flutter when needed.
 
 ## Usage
 
