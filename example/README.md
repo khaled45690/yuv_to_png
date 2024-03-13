@@ -14,4 +14,4 @@ We will not update our Privacy Policy from time to time. We will notify you of a
 
 ## Contact Us
 
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us on email:k.saad1281@gmail.com.
+If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us on email: k.saad1281@gmail.com.
