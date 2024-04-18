@@ -17,7 +17,8 @@ dependencies:
   flutter:
     sdk: flutter
   camera: ^0.10.5+9
-  flutter_image_compress: ^2.1.0
+  google_mlkit_text_recognition: ^0.11.0
+  google_mlkit_commons: ^0.6.1
 
   yuv_to_png:
     # When depending on this package from a real application you should use:

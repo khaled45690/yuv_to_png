@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:yuv_to_png/yuv_to_png.dart';
 import 'dart:ui' as ui;
 
@@ -52,58 +49,20 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
   VoidCallback? videoPlayerListener;
   String groupValue = "";
   bool enableAudio = true;
-  late AnimationController _flashModeControlRowAnimationController;
-  late Animation<double> _flashModeControlRowAnimation;
-  late AnimationController _exposureModeControlRowAnimationController;
-  late Animation<double> _exposureModeControlRowAnimation;
-  late AnimationController _focusModeControlRowAnimationController;
-  late Animation<double> _focusModeControlRowAnimation;
-  double _minAvailableZoom = 1.0;
-  double _maxAvailableZoom = 1.0;
-  double _currentScale = 1.0;
-  double _baseScale = 1.0;
   int counter = 0;
   bool isbusy = false;
 
   // Counting pointers (number of user fingers on screen)
-  int _pointers = 0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    _flashModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _flashModeControlRowAnimation = CurvedAnimation(
-      parent: _flashModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
-    _exposureModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _exposureModeControlRowAnimation = CurvedAnimation(
-      parent: _exposureModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
-    _focusModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _focusModeControlRowAnimation = CurvedAnimation(
-      parent: _focusModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _flashModeControlRowAnimationController.dispose();
-    _exposureModeControlRowAnimationController.dispose();
     super.dispose();
   }
 
@@ -198,13 +157,13 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
                         child: Radio<String>(
                           groupValue: groupValue,
                           value: "Stop",
-                          onChanged: (name)async {
+                          onChanged: (name) async {
                             groupValue = "Stop";
-                          
+
                             await controller?.stopImageStream();
                             // controller?.dispose();
                             // controller = null;
-                              setState(() {});
+                            setState(() {});
                           },
                         ),
                       ),
@@ -249,122 +208,6 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     }
   }
 
-  void _handleScaleStart(ScaleStartDetails details) {
-    _baseScale = _currentScale;
-  }
-
-  Future<void> _handleScaleUpdate(ScaleUpdateDetails details) async {
-    // When there are not exactly two fingers on screen don't scale
-    if (controller == null || _pointers != 2) {
-      return;
-    }
-
-    _currentScale = (_baseScale * details.scale)
-        .clamp(_minAvailableZoom, _maxAvailableZoom);
-
-    await controller!.setZoomLevel(_currentScale);
-  }
-
-  /// Display the thumbnail of the captured image or video.
-
-  /// Display a bar with buttons to change the flash and exposure modes
-  Widget _modeControlRowWidget() {
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.flash_on),
-              color: Colors.blue,
-              onPressed: controller != null ? onFlashModeButtonPressed : null,
-            ),
-            // The exposure and focus mode are currently not supported on the web.
-            ...!kIsWeb
-                ? <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.exposure),
-                      color: Colors.blue,
-                      onPressed: controller != null
-                          ? onExposureModeButtonPressed
-                          : null,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.filter_center_focus),
-                      color: Colors.blue,
-                      onPressed:
-                          controller != null ? onFocusModeButtonPressed : null,
-                    )
-                  ]
-                : <Widget>[],
-            IconButton(
-              icon: Icon(enableAudio ? Icons.volume_up : Icons.volume_mute),
-              color: Colors.blue,
-              onPressed: controller != null ? onAudioModeButtonPressed : null,
-            ),
-            IconButton(
-              icon: Icon(controller?.value.isCaptureOrientationLocked ?? false
-                  ? Icons.screen_lock_rotation
-                  : Icons.screen_rotation),
-              color: Colors.blue,
-              onPressed: controller != null
-                  ? onCaptureOrientationLockButtonPressed
-                  : null,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  /// Display a row of toggle to select the camera (or a message if no camera is available).
-  Widget _cameraTogglesRowWidget() {
-    final List<Widget> toggles = <Widget>[];
-
-    void onChanged(CameraDescription? description, ImageFormatGroup format) {
-      if (description == null) {
-        return;
-      }
-
-      onNewCameraSelected(description, format);
-    }
-
-    if (_cameras.isEmpty) {
-      SchedulerBinding.instance.addPostFrameCallback((_) async {
-        showInSnackBar('No camera found.');
-      });
-      return const Text('None');
-    } else {
-      toggles.add(
-        SizedBox(
-          width: 50.0,
-          child: RadioListTile<String>(
-            title: Icon(getCameraLensIcon(CameraLensDirection.back)),
-            groupValue: controller?.imageFormatGroup!.name,
-            value: "nv21",
-            onChanged: (name) =>
-                onChanged(controller!.description, ImageFormatGroup.nv21),
-          ),
-        ),
-      );
-
-      toggles.add(
-        SizedBox(
-          width: 50.0,
-          child: RadioListTile<String>(
-            title: Icon(getCameraLensIcon(CameraLensDirection.back)),
-            groupValue: controller?.imageFormatGroup!.name,
-            value: "yuv420",
-            onChanged: (name) =>
-                onChanged(controller!.description, ImageFormatGroup.yuv420),
-          ),
-        ),
-      );
-    }
-
-    return SizedBox(width: 300, child: Row(children: toggles));
-  }
-
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
   void showInSnackBar(String message) {
@@ -392,9 +235,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     groupValue = format.name;
     setState(() {});
     if (controller != null) {
-      try{
-      await controller?.stopImageStream();
-      }catch(e){
+      try {
+        await controller?.stopImageStream();
+      } catch (e) {
         print(e);
       }
       await controller?.dispose();
@@ -420,11 +263,26 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
       cameraController.startImageStream(
         (CameraImage cameraImage) async {
-          if (counter > 2 && controller != null) {
+          if (counter > 5 && controller != null) {
             counter = 0;
             Uint8List png = YuvToPng.yuvToPng(cameraImage,
                 lensDirection: cameraController.description.lensDirection);
-            ui.decodeImageFromList(png, (result) {
+              
+            ui.decodeImageFromList(png, (result) async {
+              InputImageMetadata metadata = InputImageMetadata(
+                  size: Size( cameraImage.width.toDouble(), cameraImage.height.toDouble()),
+                  rotation: InputImageRotation.rotation90deg,
+                  format: InputImageFormat.nv21,
+                  bytesPerRow: cameraImage.planes[0].bytesPerRow);
+
+              InputImage inputImage = InputImage.fromBytes(
+                  bytes: cameraImage.planes[0].bytes,
+                  metadata: metadata);
+              final TextRecognizer _textRecognizer = TextRecognizer();
+              final recognizedText =
+                  await _textRecognizer.processImage(inputImage);
+              print("recognizedText.text");
+              print(recognizedText.text);
               imageStream.sink.add(result);
             });
           } else {
@@ -465,36 +323,6 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
 
     if (mounted) {
       setState(() {});
-    }
-  }
-
-  void onFlashModeButtonPressed() {
-    if (_flashModeControlRowAnimationController.value == 1) {
-      _flashModeControlRowAnimationController.reverse();
-    } else {
-      _flashModeControlRowAnimationController.forward();
-      _exposureModeControlRowAnimationController.reverse();
-      _focusModeControlRowAnimationController.reverse();
-    }
-  }
-
-  void onExposureModeButtonPressed() {
-    if (_exposureModeControlRowAnimationController.value == 1) {
-      _exposureModeControlRowAnimationController.reverse();
-    } else {
-      _exposureModeControlRowAnimationController.forward();
-      _flashModeControlRowAnimationController.reverse();
-      _focusModeControlRowAnimationController.reverse();
-    }
-  }
-
-  void onFocusModeButtonPressed() {
-    if (_focusModeControlRowAnimationController.value == 1) {
-      _focusModeControlRowAnimationController.reverse();
-    } else {
-      _focusModeControlRowAnimationController.forward();
-      _flashModeControlRowAnimationController.reverse();
-      _exposureModeControlRowAnimationController.reverse();
     }
   }
 
