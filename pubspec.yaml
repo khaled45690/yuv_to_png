@@ -1,6 +1,6 @@
 name: yuv_to_png
-description: "A new Flutter plugin project."
-version: 0.0.1
+description: "A plugin to convert yuv to png"
+version: 0.0.2
 homepage: "https://github.com/khaled45690/yuv_to_png"
 
 environment:
