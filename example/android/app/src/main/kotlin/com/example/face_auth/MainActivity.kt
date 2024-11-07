@@ -1,4 +1,4 @@
-package com.yuv_to_png_example
+package com.example.face_auth
 
 import io.flutter.embedding.android.FlutterActivity
 
