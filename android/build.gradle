@@ -25,7 +25,7 @@ apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
 android {
-    namespace = "com.example.yuv_to_png"
+    namespace = "com.khaled.yuv_to_png"
 
     compileSdk = 36
 

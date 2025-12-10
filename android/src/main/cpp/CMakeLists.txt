@@ -13,15 +13,6 @@ project("yuv_to_png")
 add_compile_options(-fno-strict-aliasing)
 
 # to check if the lib files doesn't exist
-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/OpenCV/${ANDROID_ABI}/libopencv_java4.so) 
-# will download the files
-file(DOWNLOAD
-https://raw.githubusercontent.com/khaled45690/yuv_to_png/main/android/src/main/cpp/src/SharedLib/OpenCV/${ANDROID_ABI}/libopencv_java4.so
-${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/OpenCV/${ANDROID_ABI}/libopencv_java4.so
-    SHOW_PROGRESS
-)
-endif()
-# to check if the lib files doesn't exist
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/Libyuv/${ANDROID_ABI}/libyuv.so) 
 # will download the files
 file(DOWNLOAD
@@ -39,7 +30,6 @@ ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/libconversion/${ANDROID_ABI}/libconver
     SHOW_PROGRESS
 )
 endif()
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/OpenCV/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/Libyuv/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/libconversion/include)
 add_library(libyuv SHARED IMPORTED)

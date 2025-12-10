@@ -142,7 +142,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
                           groupValue: groupValue,
                           value: "yuv420",
                           onChanged: (name) => onNewCameraSelected(
-                              _cameras[0], ImageFormatGroup.yuv420),
+                              _cameras[1], ImageFormatGroup.yuv420),
                         ),
                       ),
                     ],
