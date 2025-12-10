@@ -1,16 +1,17 @@
-# yuv_to_png_example
+# Privacy Policy
 
-Demonstrates how to use the yuv_to_png plugin.
+Last updated: 13/3/2024
 
-## Getting Started
+YUV_To_PNG.
 
-This project is a starting point for a Flutter application.
+This page informs you of our policies regarding the collection, use and disclosure of Personal Information when you use our Service.
 
-A few resources to get you started if this is your first Flutter project:
+We do not collect or use your Personal Information. In other words, we have no access to your personal data based on the usage of our Service.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Changes to This Privacy Policy
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+We will not update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately, after they are posted on this page.
+
+## Contact Us
+
+If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us on email: k.saad1281@gmail.com.

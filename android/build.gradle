@@ -1,18 +1,16 @@
-group 'com.khaled.yuv_to_png'
-version '1.0-SNAPSHOT'
-
-
+group = 'com.khaled.yuv_to_png'
+version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = "2.1.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("com.android.tools.build:gradle:8.9.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 
@@ -23,78 +21,50 @@ allprojects {
     }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-// apply plugin: 'de.undercouch.download'
-// def f = new File('/src/main/cpp/src/SharedLib/OpenCV/arm64-v8a/libopencv_java4.so')
-// if (!f.exists()) {
-//     f.createNewFile()
-//     f.setWritable(true)
-//     new URL('https://github.com/khaled45690/yuv_to_png/tree/main/android/src/main/cpp/src/SharedLib/OpenCV/arm64-v8a/libopencv_java4.so').withInputStream{ i -> f.withOutputStream{ it << i }}
-// // }
-
-
-// defaultTasks 'downloadFile'
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
 
 android {
-    if (project.android.hasProperty("namespace")) {
-        namespace 'com.khaled.yuv_to_png'
-    }
+    namespace = "com.example.yuv_to_png"
 
-    // task downloadFile(type: Download) {
-    //     doFirst {
-    //         println "entered"
-    //         download.run {
-    //                 src 'https://raw.githubusercontent.com/khaled45690/yuv_to_png/tree/main/android/src/main/cpp/src/SharedLib/OpenCV/arm64-v8a/libopencv_java4.so'
-    //                 dest "/src/main/cpp/src/SharedLib/OpenCV/arm64-v8a/libopencv_java4.so"
-    //                 overwrite true
-    //             }
+    compileSdk = 36
 
-    //     }
-    // }
-    compileSdk 34
-    sourceSets {
-        main {
-            jniLibs.srcDir './src/main/cpp/jniLibs' //set .so files location to libs
-        }
-    }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11
     }
 
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+        main.java.srcDirs += "src/main/kotlin"
+        test.java.srcDirs += "src/test/kotlin"
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdk = 24
         externalNativeBuild {
             cmake {
                  cppFlags "-std=c++11"
                  arguments '-DANDROID_STL=c++_shared'
             }
         }
+        ndk {
+            abiFilters "arm64-v8a", "armeabi-v7a", "x86_64"
+        }
     }
-    //     tasks.whenTaskAdded { task ->
-    //     if (task.name.startsWith('externalNativeBuild')) {
-    //         task.dependsOn downloadFile
-    //     }
-    // }
     externalNativeBuild {
         cmake {
             path "./src/main/cpp/CMakeLists.txt"
-            version "3.22.1"
+            version '4.1.0'
         }
     }
+
     dependencies {
-        testImplementation 'org.jetbrains.kotlin:kotlin-test'
-        testImplementation 'org.mockito:mockito-core:5.0.0'
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+        testImplementation("org.mockito:mockito-core:5.0.0")
     }
 
     testOptions {
