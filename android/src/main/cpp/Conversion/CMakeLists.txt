@@ -4,7 +4,7 @@
 
 # Sets the minimum version of CMake required to build the native library.
 
-cmake_minimum_required(VERSION 3.18.1)
+cmake_minimum_required(VERSION 4.1.0)
 
 # Declares and names the project.
 
@@ -12,12 +12,10 @@ project("conversion")
 add_compile_options(-fno-strict-aliasing)
 #project("opencv")
 #
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../SharedLib/OpenCV/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../SharedLib/Libyuv/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src/SharedLib/OpenCV/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src/SharedLib/Libyuv/include)
 add_library(libyuv SHARED IMPORTED)
-add_library(libopencv SHARED IMPORTED)
-set_target_properties(libyuv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../SharedLib/Libyuv/${ANDROID_ABI}/libyuv.so)
-set_target_properties(libopencv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../SharedLib/OpenCV/${ANDROID_ABI}/libopencv_java4.so)
+set_target_properties(libyuv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../src/SharedLib/Libyuv/${ANDROID_ABI}/libyuv.so)
 
 
 
@@ -52,6 +50,5 @@ target_link_libraries( # Specifies the target library.
                        # included in the NDK.
                         android
                         mediandk
-                        libopencv
                         libyuv
                        ${log-lib} )

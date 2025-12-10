@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <cstdio>
 #include <chrono>
-#include <opencv2/opencv.hpp>
 #include "libyuv/rotate.h"
 #include "libyuv.h"
 

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:yuv_to_png/yuv_to_png.dart';
 import 'dart:ui' as ui;
 
@@ -252,7 +251,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
       CameraDescription cameraDescription, ImageFormatGroup format) async {
     final CameraController cameraController = CameraController(
       cameraDescription,
-      ResolutionPreset.medium,
+      ResolutionPreset.max,
       enableAudio: false,
       imageFormatGroup: format,
     );
@@ -269,20 +268,6 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
                 lensDirection: cameraController.description.lensDirection);
               
             ui.decodeImageFromList(png, (result) async {
-              InputImageMetadata metadata = InputImageMetadata(
-                  size: Size( cameraImage.width.toDouble(), cameraImage.height.toDouble()),
-                  rotation: InputImageRotation.rotation90deg,
-                  format: InputImageFormat.nv21,
-                  bytesPerRow: cameraImage.planes[0].bytesPerRow);
-
-              InputImage inputImage = InputImage.fromBytes(
-                  bytes: cameraImage.planes[0].bytes,
-                  metadata: metadata);
-              final TextRecognizer _textRecognizer = TextRecognizer();
-              final recognizedText =
-                  await _textRecognizer.processImage(inputImage);
-              print("recognizedText.text");
-              print(recognizedText.text);
               imageStream.sink.add(result);
             });
           } else {
