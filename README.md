@@ -21,7 +21,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  yuv_to_png: ^1.0.0
+  yuv_to_png: ^1.0.1
 ```
 
 ## Usage
@@ -115,6 +115,8 @@ Typical conversion times on modern Android devices:
 ⚠️ **Camera Orientation:** The `lensDirection` parameter is crucial for correct image orientation. Always pass the correct camera lens direction to ensure proper rotation and mirroring.
 
 ⚠️ **Android Only:** This plugin currently supports Android only, as YUV camera formats are primarily used on Android devices.
+
+⚠️ **First Run:** When running the example app for the first time, use `flutter run` (debug mode). Running `flutter run --release` on the first build may fail. After the initial successful debug build, release mode will work properly.
 
 ## Roadmap
 

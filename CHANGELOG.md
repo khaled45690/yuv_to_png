@@ -1,4 +1,4 @@
-## 1.0.0 - December 2025
+## 1.0.1 - December 2025
 
 ### Major Changes
 

@@ -1,11 +1,24 @@
 name: yuv_to_png
-description: "A plugin to convert YUV image data into PNG image format."
-version: 1.0.0
+description: "High-performance Flutter plugin for converting YUV camera images to PNG. Supports YUV420 and NV21 formats with automatic rotation and mirroring. Zero OpenCV dependency, optimized for camera frame processing."
+version: 1.0.1
 homepage: "https://github.com/khaled45690/yuv_to_png"
+repository: "https://github.com/khaled45690/yuv_to_png"
+issue_tracker: "https://github.com/khaled45690/yuv_to_png/issues"
+
+topics:
+  - yuv
+  - png
+  - image-conversion
+  - camera
+  - image-processing
+  - yuv420
+  - nv21
+  - libyuv
+  - android
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
-  flutter: '>=3.3.0'
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:
@@ -18,7 +31,6 @@ dev_dependencies:
   ffigen: ^11.0.0
   flutter_test:
     sdk: flutter
-  
 
 flutter:
   plugin:
@@ -27,4 +39,3 @@ flutter:
         package: com.khaled.yuv_to_png
         pluginClass: YuvToPngPlugin
         ffiPlugin: true
-

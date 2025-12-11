@@ -264,7 +264,7 @@ Tests verify:
 
 ```yaml
 dependencies:
-  yuv_to_png: ^1.0.0
+  yuv_to_png: ^1.0.1
   camera: ^0.11.0
   image: ^4.0.0 # For PNG encoding
 ```
