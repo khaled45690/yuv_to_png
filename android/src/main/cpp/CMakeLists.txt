@@ -18,8 +18,19 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/Libyuv/${ANDROID_ABI}/li
 file(DOWNLOAD
 https://raw.githubusercontent.com/khaled45690/yuv_to_png/main/android/src/main/cpp/src/SharedLib/Libyuv/${ANDROID_ABI}/libyuv.so
 ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/Libyuv/${ANDROID_ABI}/libyuv.so
-    SHOW_PROGRESS
-)
+     LOG download_log
+     # Handle potential errors gracefully
+     STATUS download_status)
+
+list(GET download_status 0 status_code)
+list(GET download_status 1 status_string)
+
+if(status_code GREATER 0)
+    message(FATAL_ERROR "Failed to download ${URL}: ${status_string}\nLog:\n${download_log}")
+else()
+    message(STATUS "Downloaded ${URL} to ${DESTINATION_FILE}")
+    # You can then extract the archive if needed using file(ARCHIVE_EXTRACT ...)
+endif()
 endif()
 # to check if the lib files doesn't exist
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/libconversion/${ANDROID_ABI}/libconversion.so) 
@@ -27,9 +38,21 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/libconversion/${ANDROID_
 file(DOWNLOAD
 https://raw.githubusercontent.com/khaled45690/yuv_to_png/main/android/src/main/cpp/src/SharedLib/libconversion/${ANDROID_ABI}/libconversion.so
 ${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/libconversion/${ANDROID_ABI}/libconversion.so
-    SHOW_PROGRESS
-)
+     LOG download_log
+     # Handle potential errors gracefully
+     STATUS download_status)
+
+list(GET download_status 0 status_code)
+list(GET download_status 1 status_string)
+
+if(status_code GREATER 0)
+    message(FATAL_ERROR "Failed to download ${URL}: ${status_string}\nLog:\n${download_log}")
+else()
+    message(STATUS "Downloaded ${URL} to ${DESTINATION_FILE}")
+    # You can then extract the archive if needed using file(ARCHIVE_EXTRACT ...)
 endif()
+endif()
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/Libyuv/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SharedLib/libconversion/include)
 add_library(libyuv SHARED IMPORTED)
