@@ -9,12 +9,8 @@ topics:
   - yuv
   - png
   - image-conversion
-  - camera
-  - image-processing
   - yuv420
   - nv21
-  - libyuv
-  - android
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
