@@ -13,6 +13,7 @@ This plugin provides efficient YUV to PNG conversion with minimal dependencies a
 - ✅ Automatic camera orientation handling (front/back)
 - ✅ Support for YUV420 and NV21 formats
 - ✅ Built-in rotation and mirroring for camera images
+- ✅ Raw RGBA output (`yuvToRgb`) when you don't need a PNG
 - ✅ Performance tracking with timing metrics
 
 ## Installation
@@ -21,7 +22,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  yuv_to_png: ^1.0.1
+  yuv_to_png: ^1.2.0
 ```
 
 ## Usage
@@ -42,22 +43,32 @@ Uint8List png = YuvToPng.yuvToPng(
 Image.memory(png)
 ```
 
-if there is an error you can use the next function to check if
-the image data is corrupted or not
-
-```dart
-        await precacheImage(Image.memory(imagedata).image, context,
-        onError: (exception, stackTrace) {
-      print('Failed to load image: $exception');
-      imageRendered = false;
-    });
-
-```
-
-if image data is corrupted you could simply use recurssion untill
-we get correct image data
+If a frame cannot be converted, `yuvToPng` / `yuvToRgb` throw (a `StateError` for native failures), so wrap calls in `try`/`catch` (see *Error Handling* below).
 
 The PNG data can then be used to display the image in Flutter using `Image.memory()` or as shown in the example application.
+
+### Raw RGB (no PNG)
+
+If you only need the pixels (e.g. to feed an ML model or draw them yourself) skip PNG
+encoding with `yuvToRgb`. It returns RGBA8888 bytes (4 bytes per pixel, alpha = 255),
+already rotated to portrait and mirrored for the front camera. Only `yuv420` is supported.
+
+```dart
+final RgbImage rgb = YuvToPng.yuvToRgb(
+  cameraImage,
+  lensDirection: cameraController.description.lensDirection,
+);
+// rgb.bytes.length == rgb.width * rgb.height * 4
+
+// Draw it:
+ui.decodeImageFromPixels(
+  rgb.bytes, rgb.width, rgb.height, ui.PixelFormat.rgba8888,
+  (ui.Image image) => /* use with RawImage(image: image) */,
+);
+```
+
+The example app (`example/`) lets you compare three pipelines live: native PNG, raw RGB, and
+raw RGB encoded to PNG in Dart (`example/lib/png_encoder.dart`).
 
 ## Optional
 
@@ -65,17 +76,11 @@ The PNG data can then be used to display the image in Flutter using `Image.memor
 
 ```dart
 try {
-  Uint8List png = YuvToPng.yuvToPng(cameraImage, lensDirection: lensDirection);
-
-  // Verify image data is valid
-  await precacheImage(
-    Image.memory(png).image,
-    context,
-    onError: (exception, stackTrace) {
-      print('Failed to load image: $exception');
-    }
-  );
+  final Uint8List png =
+      YuvToPng.yuvToPng(cameraImage, lensDirection: lensDirection);
+  // use png
 } catch (e) {
+  // Unsupported format, or the native conversion failed.
   print('Conversion error: $e');
 }
 ```
@@ -109,6 +114,10 @@ Typical conversion times on modern Android devices:
 2. Mirror (front camera only)
 3. Rotate 90° clockwise (or 270° for front camera)
 4. RGBA → PNG encoding
+
+## Requirements
+
+- Flutter 3.50+ (Dart 3.14+), Android API 24+
 
 ## Important Notes
 

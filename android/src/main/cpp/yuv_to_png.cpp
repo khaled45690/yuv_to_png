@@ -21,3 +21,21 @@ OutputpngImageStruct nv21ToPng(uint8_t *ydata, int32_t yRowStride, int32_t width
 {
   return  nv21_to_png(ydata, yRowStride, width, height, isFrontCamera);
 }
+
+extern "C" __attribute__((visibility("default"))) __attribute__((used))
+OutputRgbImageStruct yuvToRgb(uint8_t *ydata, int32_t yRowStride, uint8_t *udata, int32_t uRowStride, int32_t uPixelStride, uint8_t *vdata, int32_t vRowStride, int32_t width, int32_t height, bool isFrontCamera)
+{
+  return yuv_to_rgb(ydata, yRowStride, udata, uRowStride, uPixelStride, vdata, vRowStride, width, height, isFrontCamera);
+}
+
+extern "C" __attribute__((visibility("default"))) __attribute__((used))
+void freeRgbBuffer(uint8_t *data)
+{
+  free_rgb_buffer(data);
+}
+
+extern "C" __attribute__((visibility("default"))) __attribute__((used))
+void freePngBuffer(uint8_t *data)
+{
+  free_png_buffer(data);
+}

@@ -31,6 +31,7 @@ dependencies:
   camera: ^0.10.5+9
 
 dev_dependencies:
+  camera_platform_interface: ^2.8.0
   integration_test:
     sdk: flutter
   flutter_test:

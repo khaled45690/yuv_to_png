@@ -1,18 +1,17 @@
 name: yuv_to_png
-description: "A plugin to convert yuv to png"
-version: 0.0.2
+description: "Fast Android camera YUV420/NV21 frame conversion to PNG or raw RGBA pixels, powered by libyuv."
+version: 1.2.0
 homepage: "https://github.com/khaled45690/yuv_to_png"
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
-  flutter: '>=3.3.0'
+  sdk: '>=3.14.0 <4.0.0'
+  flutter: '>=3.50.0'
 
 dependencies:
   flutter:
     sdk: flutter
   ffi: ^2.1.2
   camera: ^0.10.5+9
-  path_provider: ^2.1.2
 
 dev_dependencies:
   ffigen: ^11.0.0

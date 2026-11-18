@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:ffi/ffi.dart';
 import 'OutputStruct.dart';
+import 'native_lib.dart';
+
 // Define the function signature in Dart.
 typedef YuvToPngFunc = OutputStruct Function(
     Pointer<Uint8> ydata,
@@ -32,45 +34,34 @@ typedef YuvToPngFun = OutputStruct Function(
 
 Uint8List yuv420ToPng(CameraImage image,
     {CameraLensDirection lensDirection = CameraLensDirection.back}) {
-  // Convert the image planes to FFI pointers.
-  // Load the dynamic library.
-  final dylib = DynamicLibrary.open('libyuv_to_png.so');
-
-  // Look up the function.
-  final yuvToPngPointer =
-      dylib.lookupFunction<YuvToPngFunc, YuvToPngFun>('yuvToPng');
+  final yuvToPng =
+      nativeLib.lookupFunction<YuvToPngFunc, YuvToPngFun>('yuvToPng');
   final yPlane = image.planes[0];
   final uPlane = image.planes[1];
   final vPlane = image.planes[2];
-  Pointer<Uint8> yPointer = calloc<Uint8>(yPlane.bytes.length);
-  Pointer<Uint8> uPointer = calloc<Uint8>(uPlane.bytes.length);
-  Pointer<Uint8> vPointer = calloc<Uint8>(vPlane.bytes.length);
-  Uint8List yPointerParser = yPointer.asTypedList(yPlane.bytes.length);
-  Uint8List uPointerParser = uPointer.asTypedList(yPlane.bytes.length);
-  Uint8List vPointerParser = vPointer.asTypedList(yPlane.bytes.length);
+  final Pointer<Uint8> yPointer = calloc<Uint8>(yPlane.bytes.length);
+  final Pointer<Uint8> uPointer = calloc<Uint8>(uPlane.bytes.length);
+  final Pointer<Uint8> vPointer = calloc<Uint8>(vPlane.bytes.length);
+  try {
+    yPointer.asTypedList(yPlane.bytes.length).setAll(0, yPlane.bytes);
+    uPointer.asTypedList(uPlane.bytes.length).setAll(0, uPlane.bytes);
+    vPointer.asTypedList(vPlane.bytes.length).setAll(0, vPlane.bytes);
 
-  yPointerParser.setAll(0, yPlane.bytes);
-  uPointerParser.setAll(0, uPlane.bytes);
-  vPointerParser.setAll(0, vPlane.bytes);
-
-  // Call the C++ function.
-  OutputStruct outputData = yuvToPngPointer(
-      yPointer,
-      yPlane.bytesPerRow,
-      uPointer,
-      uPlane.bytesPerRow,
-      uPlane.bytesPerPixel!,
-      vPointer,
-      vPlane.bytesPerRow,
-      image.width,
-      image.height,
-      lensDirection == CameraLensDirection.front);
-
-  // TODO: Use outputData here.
-  // Don't forget to free the memory when you're done!
-  calloc.free(yPointer);
-  calloc.free(uPointer);
-  calloc.free(vPointer);
-  dylib.close();
-  return outputData.data.asTypedList(outputData.length);
+    final OutputStruct output = yuvToPng(
+        yPointer,
+        yPlane.bytesPerRow,
+        uPointer,
+        uPlane.bytesPerRow,
+        uPlane.bytesPerPixel ?? 1,
+        vPointer,
+        vPlane.bytesPerRow,
+        image.width,
+        image.height,
+        lensDirection == CameraLensDirection.front);
+    return takePngBytes(output);
+  } finally {
+    calloc.free(yPointer);
+    calloc.free(uPointer);
+    calloc.free(vPointer);
+  }
 }
